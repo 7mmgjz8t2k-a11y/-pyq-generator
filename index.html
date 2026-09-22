@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PYQ Template Generator</title>
+
+<style>
+
+/* =========================
+   BASIC PAGE
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #0d0d16;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================
+   INPUT PANEL
+========================= */
+
+.control-panel {
+    width: min(900px, 94vw);
+    margin: 20px auto;
+    padding: 22px;
+    background: #181824;
+    border-radius: 18px;
+    border: 1px solid #292941;
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 20px;
+    font-size: 26px;
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    color: #bdbddd;
+    font-size: 14px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 11px 12px;
+    border-radius: 9px;
+    border: 1px solid #3b3b55;
+    background: #0e0e18;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.options-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+button {
+    border: none;
+    border-radius: 9px;
+    padding: 12px 18px;
+    margin-top: 16px;
+    background: #7657ff;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #8b72ff;
+}
+
+.download-btn {
+    background: #303047;
+    margin-left: 8px;
+}
+
+.download-btn:hover {
+    background: #42425e;
+}
+
+
+/* =========================
+   PREVIEW TITLE
+========================= */
+
+.preview-title {
+    text-align: center;
+    color: #aaaac0;
+    font-size: 22px;
+    margin: 28px 0 12px;
+}
+
+
+/* =========================
+   YOUTUBE PAGE
+   EXACT 16:9
+========================= */
+
+.template {
+    width: min(95vw, 1280px);
+
+    aspect-ratio: 16 / 9;
+
+    margin: 0 auto 40px;
+
+    background: #10101a;
+
+    border: 2px solid #30304a;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================
+   HEADER
+   8%
+========================= */
+
+.header {
+    height: 8%;
+    flex: 0 0 8%;
+
+    padding: 5px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: #181827;
+
+    border-bottom: 1px solid #303049;
+}
+
+.header-left {
+    font-size: clamp(9px, 1vw, 14px);
+    font-weight: bold;
+}
+
+.header-right {
+    font-size: clamp(8px, .85vw, 12px);
+    color: #aaaac0;
+}
+
+
+/* =========================
+   QUESTION AREA
+   FIXED 15%
+========================= */
+
+.question-area {
+
+    height: 15%;
+    flex: 0 0 15%;
+
+    display: flex;
+    align-items: center;
+
+    padding: 6px 18px;
+
+    background: #151521;
+
+    overflow: hidden;
+}
+
+
+/* SMALL QUESTION NUMBER */
+
+.question-number {
+
+    width: 30px;
+    height: 30px;
+
+    flex: 0 0 30px;
+
+    margin-right: 9px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #7657ff;
+
+    border-radius: 7px;
+
+    font-size: 10px;
+    font-weight: bold;
+}
+
+
+/* QUESTION TEXT */
+
+.question-text {
+
+    flex: 1;
+
+    min-width: 0;
+
+    max-height: 100%;
+
+    overflow: hidden;
+
+    font-size: 20px;
+
+    line-height: 1.15;
+
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+
+    word-break: normal;
+}
+
+
+/* =========================
+   OPTIONS
+   ONLY 7%
+========================= */
+
+.options-preview {
+
+    height: 7%;
+    flex: 0 0 7%;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 6px;
+
+    padding: 4px 18px;
+
+    background: #11111b;
+
+    overflow: hidden;
+}
+
+
+.option {
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 2px 7px;
+
+    background: #1d1d2c;
+
+    border: 1px solid #37374e;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+}
+
+
+.option-label {
+
+    color: #927cff;
+
+    font-weight: bold;
+
+    font-size: 10px;
+
+    margin-right: 4px;
+
+    flex: 0 0 auto;
+}
+
+
+.option-text {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   SOLUTION AREA
+   LARGE 70%
+========================= */
+
+.solution-area {
+
+    height: 70%;
+    flex: 0 0 70%;
+
+    min-height: 0;
+
+    position: relative;
+
+    padding: 7px 18px;
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        );
+
+    background-size: 100% 28px;
+
+}
+
+
+/* SMALL SOLUTION LABEL */
+
+.solution-label {
+
+    display: inline-block;
+
+    padding: 3px 9px;
+
+    background: #7657ff;
+
+    border-radius: 12px;
+
+    font-size: 9px;
+
+    font-weight: bold;
+
+    letter-spacing: .5px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px) {
+
+    .control-panel {
+        margin: 10px auto;
+        padding: 15px;
+    }
+
+    .options-input {
+        grid-template-columns: 1fr;
+    }
+
+    .template {
+        width: 98vw;
+        border-radius: 9px;
+    }
+
+    .question-area {
+        padding: 4px 9px;
+    }
+
+    .question-number {
+
+        width: 25px;
+        height: 25px;
+
+        flex-basis: 25px;
+
+        margin-right: 6px;
+
+        font-size: 8px;
+
+        border-radius: 6px;
+    }
+
+    .question-text {
+        font-size: 16px;
+    }
+
+    .options-preview {
+        padding: 3px 9px;
+        gap: 3px;
+    }
+
+    .option {
+        padding: 1px 4px;
+    }
+
+    .option-label {
+        font-size: 8px;
+    }
+
+    .option-text {
+        font-size: 8px;
+    }
+
+    .solution-area {
+        padding: 5px 9px;
+    }
+
+    .solution-label {
+        font-size: 7px;
+        padding: 2px 7px;
+    }
+
+    .download-btn {
+        margin-left: 0;
+    }
+}
+
+
+/* =========================
+   PDF / PRINT
+========================= */
+
+@media print {
+
+    @page {
+        size: 16in 9in;
+        margin: 0;
+    }
+
+    html,
+    body {
+
+        width: 100%;
+        height: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        background: #10101a !important;
+
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .control-panel,
+    .preview-title {
+
+        display: none !important;
+    }
+
+    .template {
+
+        width: 100vw !important;
+        height: 56.25vw !important;
+
+        max-width: none !important;
+
+        aspect-ratio: 16 / 9 !important;
+
+        margin: 0 !important;
+
+        border: 0 !important;
+
+        border-radius: 0 !important;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =================================
+     INPUT PANEL
+================================= -->
+
+<div class="control-panel">
+
+    <h1>PYQ Template Generator</h1>
+
+
+    <label>Exam / Year</label>
+
+    <input
+        id="exam"
+        placeholder="Example: JEE Main 2026"
+    >
+
+
+    <label>Subject</label>
+
+    <input
+        id="subject"
+        placeholder="Example: Mathematics"
+    >
+
+
+    <label>Question Number</label>
+
+    <input
+        id="questionNo"
+        placeholder="Example: 01"
+    >
+
+
+    <label>Question</label>
+
+    <textarea
+        id="question"
+        placeholder="Paste your PYQ question here..."
+    ></textarea>
+
+
+    <label>Options</label>
+
+    <div class="options-input">
+
+        <input
+            id="optionA"
+            placeholder="Option A"
+        >
+
+        <input
+            id="optionB"
+            placeholder="Option B"
+        >
+
+        <input
+            id="optionC"
+            placeholder="Option C"
+        >
+
+        <input
+            id="optionD"
+            placeholder="Option D"
+        >
+
+    </div>
+
+
+    <button onclick="generateTemplate()">
+        GENERATE TEMPLATE
+    </button>
+
+
+    <button
+        class="download-btn"
+        onclick="downloadPage()"
+    >
+        DOWNLOAD PAGE / PDF
+    </button>
+
+</div>
+
+
+
+<h2 class="preview-title">
+    Your Generated Template
+</h2>
+
+
+
+<!-- =================================
+     GENERATED 16:9 PAGE
+================================= -->
+
+<div
+    class="template"
+    id="template"
+>
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div
+            class="header-left"
+            id="previewExam"
+        >
+            PYQ MATHEMATICS
+        </div>
+
+        <div
+            class="header-right"
+            id="previewSubject"
+        >
+            Mathematics
+        </div>
+
+    </div>
+
+
+
+    <!-- QUESTION -->
+
+    <div
+        class="question-area"
+        id="questionArea"
+    >
+
+        <div
+            class="question-number"
+            id="previewNumber"
+        >
+            01
+        </div>
+
+
+        <div
+            class="question-text"
+            id="previewQuestion"
+        >
+            Your question will appear here.
+        </div>
+
+    </div>
+
+
+
+    <!-- OPTIONS -->
+
+    <div class="options-preview">
+
+
+        <div class="option">
+
+            <span class="option-label">
+                A
+            </span>
+
+            <span
+                class="option-text"
+                id="previewA"
+            >
+                Option A
+            </span>
+
+        </div>
+
+
+
+        <div class="option">
+
+            <span class="option-label">
+                B
+            </span>
+
+            <span
+                class="option-text"
+                id="previewB"
+            >
+                Option B
+            </span>
+
+        </div>
+
+
+
+        <div class="option">
+
+            <span class="option-label">
+                C
+            </span>
+
+            <span
+                class="option-text"
+                id="previewC"
+            >
+                Option C
+            </span>
+
+        </div>
+
+
+
+        <div class="option">
+
+            <span class="option-label">
+                D
+            </span>
+
+            <span
+                class="option-text"
+                id="previewD"
+            >
+                Option D
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- SOLUTION -->
+
+    <div class="solution-area">
+
+        <div class="solution-label">
+            SOLUTION
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =================================
+   AUTOMATIC QUESTION FONT SIZE
+================================= */
+
+function fitQuestionText() {
+
+    const box =
+        document.getElementById(
+            "questionArea"
+        );
+
+    const text =
+        document.getElementById(
+            "previewQuestion"
+        );
+
+
+    /*
+       Start with large font.
+       It automatically becomes smaller
+       only when necessary.
+    */
+
+    let fontSize = 20;
+
+    const minimumFontSize = 8;
+
+
+    text.style.fontSize =
+        fontSize + "px";
+
+
+    /*
+       Keep reducing the font until
+       the complete question fits
+       inside the fixed question box.
+    */
+
+    while (
+
+        (
+            text.scrollHeight >
+            box.clientHeight - 8
+        )
+
+        &&
+
+        fontSize >
+        minimumFontSize
+
+    ) {
+
+        fontSize -= 0.5;
+
+        text.style.fontSize =
+            fontSize + "px";
+    }
+
+}
+
+
+
+/* =================================
+   AUTOMATIC OPTION FONT SIZE
+================================= */
+
+function fitOptionText() {
+
+    const options =
+        document.querySelectorAll(
+            ".option-text"
+        );
+
+
+    options.forEach(function(option) {
+
+        let fontSize = 11;
+
+        const minimumFontSize = 6;
+
+
+        option.style.fontSize =
+            fontSize + "px";
+
+
+        while (
+
+            option.scrollWidth >
+            option.clientWidth
+
+            &&
+
+            fontSize >
+            minimumFontSize
+
+        ) {
+
+            fontSize -= 0.5;
+
+            option.style.fontSize =
+                fontSize + "px";
+        }
+
+    });
+
+}
+
+
+
+/* =================================
+   GENERATE TEMPLATE
+================================= */
+
+function generateTemplate() {
+
+
+    /* EXAM */
+
+    document.getElementById(
+        "previewExam"
+    ).textContent =
+
+        document.getElementById(
+            "exam"
+        ).value ||
+
+        "PYQ";
+
+
+
+    /* SUBJECT */
+
+    document.getElementById(
+        "previewSubject"
+    ).textContent =
+
+        document.getElementById(
+            "subject"
+        ).value ||
+
+        "Mathematics";
+
+
+
+    /* QUESTION NUMBER */
+
+    document.getElementById(
+        "previewNumber"
+    ).textContent =
+
+        document.getElementById(
+            "questionNo"
+        ).value ||
+
+        "01";
+
+
+
+    /* QUESTION */
+
+    document.getElementById(
+        "previewQuestion"
+    ).textContent =
+
+        document.getElementById(
+            "question"
+        ).value ||
+
+        "Your question will appear here.";
+
+
+
+    /* OPTIONS */
+
+    document.getElementById(
+        "previewA"
+    ).textContent =
+
+        document.getElementById(
+            "optionA"
+        ).value ||
+
+        "Option A";
+
+
+    document.getElementById(
+        "previewB"
+    ).textContent =
+
+        document.getElementById(
+            "optionB"
+        ).value ||
+
+        "Option B";
+
+
+    document.getElementById(
+        "previewC"
+    ).textContent =
+
+        document.getElementById(
+            "optionC"
+        ).value ||
+
+        "Option C";
+
+
+    document.getElementById(
+        "previewD"
+    ).textContent =
+
+        document.getElementById(
+            "optionD"
+        ).value ||
+
+        "Option D";
+
+
+
+    /*
+       Wait until the browser has
+       rendered the new text.
+    */
+
+    setTimeout(function() {
+
+        fitQuestionText();
+
+        fitOptionText();
+
+    }, 50);
+
+}
+
+
+
+/* =================================
+   DOWNLOAD / PDF
+================================= */
+
+function downloadPage() {
+
+    /*
+       Generate the latest version first.
+    */
+
+    generateTemplate();
+
+
+    /*
+       Open the browser's print window.
+       Choose "Save to Files" / "Save as PDF".
+    */
+
+    setTimeout(function() {
+
+        window.print();
+
+    }, 300);
+
+}
+
+
+
+/* =================================
+   RESIZE
+================================= */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        fitQuestionText();
+
+        fitOptionText();
+
+    }
+);
+
+
+</script>
+
+
+</body>
+</html>
