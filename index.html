@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PYQ Template Generator</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #10101a;
+    color: white;
+}
+
+/* CONTROL PANEL */
+
+.control-panel {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 25px;
+    background: #191927;
+    border-radius: 18px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 0;
+    color: #ffffff;
+}
+
+label {
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #bdbddd;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #393951;
+    border-radius: 10px;
+    background: #11111c;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+button {
+    margin-top: 18px;
+    padding: 13px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #7657ff;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #8b72ff;
+}
+
+/* PREVIEW */
+
+.preview-title {
+    text-align: center;
+    margin: 30px 0 12px;
+    color: #aaaac0;
+}
+
+/* 16:9 TEMPLATE */
+
+.template {
+    width: min(95vw, 1200px);
+    aspect-ratio: 16 / 9;
+    margin: 0 auto 40px;
+
+    background: #10101a;
+
+    border: 2px solid #292940;
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+
+.header {
+    height: 10%;
+    padding: 10px 25px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: #18182a;
+    border-bottom: 1px solid #35354d;
+}
+
+.header-left {
+    font-size: clamp(12px, 1.5vw, 20px);
+    font-weight: bold;
+}
+
+.header-right {
+    font-size: clamp(10px, 1.2vw, 16px);
+    color: #aaaac0;
+}
+
+/* QUESTION */
+
+.question-area {
+    height: 17%;
+    padding: 12px 25px;
+
+    display: flex;
+    align-items: center;
+
+    background: #151522;
+}
+
+.question-number {
+    min-width: 50px;
+    height: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-right: 15px;
+
+    background: #7657ff;
+    border-radius: 12px;
+
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.question-text {
+    font-size: clamp(15px, 1.7vw, 23px);
+    line-height: 1.35;
+    font-weight: 600;
+}
+
+/* OPTIONS */
+
+.options-preview {
+    height: 10%;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+
+    padding: 8px 25px;
+
+    background: #11111c;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+
+    padding: 5px 12px;
+
+    background: #1d1d2d;
+    border: 1px solid #36364d;
+    border-radius: 8px;
+
+    font-size: clamp(11px, 1.2vw, 16px);
+}
+
+.option-label {
+    color: #927cff;
+    font-weight: bold;
+    margin-right: 7px;
+}
+
+/* SOLUTION */
+
+.solution-area {
+    height: 63%;
+
+    position: relative;
+
+    padding: 25px;
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        );
+
+    background-size: 100% 32px;
+}
+
+.solution-label {
+    position: absolute;
+
+    top: 12px;
+    left: 25px;
+
+    padding: 6px 14px;
+
+    background: #7657ff;
+    border-radius: 20px;
+
+    font-size: clamp(10px, 1vw, 14px);
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.write-space {
+    width: 100%;
+    height: 100%;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .control-panel {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .options {
+        grid-template-columns: 1fr;
+    }
+
+    .template {
+        width: 98vw;
+        border-radius: 10px;
+    }
+
+    .question-area {
+        padding: 8px 12px;
+    }
+
+    .question-number {
+        min-width: 35px;
+        height: 35px;
+        margin-right: 8px;
+        font-size: 12px;
+    }
+
+    .options-preview {
+        padding: 5px 10px;
+        gap: 5px;
+    }
+
+    .option {
+        padding: 3px 6px;
+    }
+
+    .solution-area {
+        padding: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- CONTROL PANEL -->
+
+<div class="control-panel">
+
+    <h1>PYQ Template Generator</h1>
+
+    <label>Exam / Year</label>
+    <input id="exam" placeholder="Example: JEE Main 2026">
+
+    <label>Subject</label>
+    <input id="subject" placeholder="Example: Mathematics">
+
+    <label>Question Number</label>
+    <input id="questionNo" placeholder="Example: 01">
+
+    <label>Question</label>
+    <textarea id="question"
+        placeholder="Paste your PYQ question here..."></textarea>
+
+    <label>Options</label>
+
+    <div class="options">
+
+        <input id="optionA"
+            placeholder="Option A">
+
+        <input id="optionB"
+            placeholder="Option B">
+
+        <input id="optionC"
+            placeholder="Option C">
+
+        <input id="optionD"
+            placeholder="Option D">
+
+    </div>
+
+    <button onclick="generateTemplate()">
+        GENERATE TEMPLATE
+    </button>
+
+</div>
+
+
+<h2 class="preview-title">Your Generated Template</h2>
+
+
+<!-- GENERATED TEMPLATE -->
+
+<div class="template" id="template">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="header-left" id="previewExam">
+            PYQ MATHEMATICS
+        </div>
+
+        <div class="header-right" id="previewSubject">
+            Mathematics
+        </div>
+
+    </div>
+
+
+    <!-- QUESTION -->
+
+    <div class="question-area">
+
+        <div class="question-number" id="previewNumber">
+            01
+        </div>
+
+        <div class="question-text" id="previewQuestion">
+            Your question will appear here.
+        </div>
+
+    </div>
+
+
+    <!-- OPTIONS -->
+
+    <div class="options-preview">
+
+        <div class="option">
+            <span class="option-label">A</span>
+            <span id="previewA">Option A</span>
+        </div>
+
+        <div class="option">
+            <span class="option-label">B</span>
+            <span id="previewB">Option B</span>
+        </div>
+
+        <div class="option">
+            <span class="option-label">C</span>
+            <span id="previewC">Option C</span>
+        </div>
+
+        <div class="option">
+            <span class="option-label">D</span>
+            <span id="previewD">Option D</span>
+        </div>
+
+    </div>
+
+
+    <!-- SOLUTION -->
+
+    <div class="solution-area">
+
+        <div class="solution-label">
+            SOLUTION
+        </div>
+
+        <div class="write-space"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function generateTemplate() {
+
+    const exam =
+        document.getElementById("exam").value;
+
+    const subject =
+        document.getElementById("subject").value;
+
+    const number =
+        document.getElementById("questionNo").value;
+
+    const question =
+        document.getElementById("question").value;
+
+    const optionA =
+        document.getElementById("optionA").value;
+
+    const optionB =
+        document.getElementById("optionB").value;
+
+    const optionC =
+        document.getElementById("optionC").value;
+
+    const optionD =
+        document.getElementById("optionD").value;
+
+
+    document.getElementById("previewExam").textContent =
+        exam || "PYQ";
+
+    document.getElementById("previewSubject").textContent =
+        subject || "Mathematics";
+
+    document.getElementById("previewNumber").textContent =
+        number || "01";
+
+    document.getElementById("previewQuestion").textContent =
+        question || "Your question will appear here.";
+
+    document.getElementById("previewA").textContent =
+        optionA || "Option A";
+
+    document.getElementById("previewB").textContent =
+        optionB || "Option B";
+
+    document.getElementById("previewC").textContent =
+        optionC || "Option C";
+
+    document.getElementById("previewD").textContent =
+        optionD || "Option D";
+}
+
+</script>
+
+</body>
+</html>
